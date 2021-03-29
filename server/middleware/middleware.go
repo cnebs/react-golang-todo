@@ -19,7 +19,7 @@ import (
 // DB connection string
 // for localhost mongoDB
 // const connectionString = "mongodb://localhost:27017"
-const connectionString = "Connection String"
+const connectionString = "mongodb+srv://mongo-todo:pa55w0rd@cluster0.dzsa9.mongodb.net/test?retryWrites=true&w=majority"
 
 // Database Name
 const dbName = "test"
