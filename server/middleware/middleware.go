@@ -1,19 +1,19 @@
 package middleware
 
 import (
-				"context"
-				"encoding/json"
-				"fmt"
-				"log"
-				"net/http"
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
 
-				"../models"
-				"github.com/gorilla/mux"
+	"../models"
+	"github.com/gorilla/mux"
 
-				"go.mongodb.org/mongo-driver/bson"
-				"go.mongodb.org/mongo-driver/bson/primitive"
-				"go.mongodb.org/mongo-driver/mongo"
-				"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // DB connection string
@@ -32,28 +32,20 @@ var collection *mongo.Collection
 
 // create connection with mongo db
 func init() {
-
 	// Set client options
 	clientOptions := options.Client().ApplyURI(connectionString)
-
 	// connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
-
 	if err != nil {
 					log.Fatal(err)
 	}
-
 	// check connection
 	err = client.Ping(context.TODO(), nil)
-
 	if err != nil {
 					log.Fatal(err)
 	}
-
 	fmt.Println("Connected to MongoDB!")
-
 	collection = client.Database(dbName).Collection(collName)
-
 	fmt.Println("Collection instance created!")
 }
 
