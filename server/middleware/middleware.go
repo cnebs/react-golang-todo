@@ -9,6 +9,7 @@ import (
 
 	"../models"
 	"github.com/gorilla/mux"
+	"github.com/tkanos/gonfig"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,6 +20,10 @@ import (
 // DB connection string
 // for localhost mongoDB
 // const connectionString = "mongodb://localhost:27017"
+type Config struct {
+	ConnectionString string
+}
+
 const connectionString = "mongodb+srv://mongo-todo:pa55w0rd@cluster0.dzsa9.mongodb.net/test?retryWrites=true&w=majority"
 
 // Database Name
@@ -32,6 +37,9 @@ var collection *mongo.Collection
 
 // create connection with mongo db
 func init() {
+	configuration := Config{}
+	err := gonfig.GetConf("../config/config.json", &configuration)
+	fmt.Println(configuration)
 	// Set client options
 	clientOptions := options.Client().ApplyURI(connectionString)
 	// connect to MongoDB
