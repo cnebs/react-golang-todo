@@ -9,7 +9,6 @@ import (
 
 	"../models"
 	"github.com/gorilla/mux"
-	"github.com/tkanos/gonfig"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -18,18 +17,12 @@ import (
 )
 
 // DB connection string
-// for localhost mongoDB
-// const connectionString = "mongodb://localhost:27017"
-type Config struct {
-	ConnectionString string
-}
-
 const connectionString = "mongodb+srv://mongo-todo:pa55w0rd@cluster0.dzsa9.mongodb.net/test?retryWrites=true&w=majority"
 
 // Database Name
 const dbName = "test"
 
-// Collection Name
+// Collection name
 const collName = "todoList"
 
 // collection object/instance
@@ -37,23 +30,29 @@ var collection *mongo.Collection
 
 // create connection with mongo db
 func init() {
-	configuration := Config{}
-	err := gonfig.GetConf("../config/config.json", &configuration)
-	fmt.Println(configuration)
+
 	// Set client options
 	clientOptions := options.Client().ApplyURI(connectionString)
+
 	// connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
+
 	if err != nil {
-					log.Fatal(err)
+		fmt.Println("failed here")
+		log.Fatal(err)
 	}
-	// check connection
+
+	// Check the connection
 	err = client.Ping(context.TODO(), nil)
+
 	if err != nil {
-					log.Fatal(err)
+		log.Fatal(err)
 	}
+
 	fmt.Println("Connected to MongoDB!")
+
 	collection = client.Database(dbName).Collection(collName)
+
 	fmt.Println("Collection instance created!")
 }
 
