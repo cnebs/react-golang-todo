@@ -56,6 +56,10 @@ func init() {
 	fmt.Println("Collection instance created!")
 }
 
+func NotImplemented(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Not Implemented"))
+}
+
 // GetAllTask get all the task route
 func GetAllTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
