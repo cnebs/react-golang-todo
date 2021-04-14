@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
+import { Card, Form, Input, Icon } from "semantic-ui-react";
 import { endpoint } from "../config.json";
 
 const ToDoList = () => {
@@ -8,10 +8,61 @@ const ToDoList = () => {
   const [task, setTask] = useState("");
   const [items, updateItems] = useState([]);
 
+  const taskFns = {
+    get: () => {
+      axios.get(endpoint + "/api/task")
+        .then(res => {
+          console.log(res);
+          updateItems(res.data?.map(item => ({
+            color: item.status ? "green" : "yellow",
+            _id: item._id,
+            task: item.task,
+          }))
+            ?? []);
+        });
+    },
+    update: (id) => {
+      axios
+        .put(`${endpoint}/api/task/${id}`, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+        .then(res => {
+          console.log(res);
+          taskFns.get();
+        });
+    },
+    undo: (id) => {
+      axios
+        .put(`${endpoint}/api/undoTask/${id}`, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+        .then(res => {
+          console.log(res);
+          taskFns.get();
+        });
+    },
+    delete: (id) => {
+      axios
+        .delete(`${endpoint}/api/deleteTask/${id}`, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+        .then(res => {
+          console.log(res);
+          taskFns.get();
+        });
+    }
+  }
+
   // On mount, retrieve task
   useEffect(() => {
     taskFns.get();
-  }, []);
+  });
 
   const onChange = (event) => {
     setTask(event.target.value)
@@ -33,73 +84,16 @@ const ToDoList = () => {
           }
         )
         .then(res => {
-          getTask();
+          taskFns.get();
           setTask("")
           console.log(res);
         });
     }
   };
 
-  const taskFns = {
-    get: () => {
-      axios.get(endpoint + "/api/task")
-        .then(res => {
-          console.log(res);
-          updateItems(res.data?.
-            map(item => ({
-              color: item.status ? "green" : "yellow",
-              _id: item._id,
-              task: item.task,
-            }))
-            ?? []);
-        });
-    },
-    update: () => {
-      axios
-        .put(`${endpoint}/api/task/${id}`, {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        })
-        .then(res => {
-          console.log(res);
-          taskFns.get();
-        });
-    },
-    undo: () => {
-      axios
-        .put(`${endpoint}/api/undoTask/${id}`, {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        })
-        .then(res => {
-          console.log(res);
-          taskFns.get();
-        });
-    },
-    delete: () => {
-      axios
-        .delete(`${endpoint}/api/deleteTask/${id}`, {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        })
-        .then(res => {
-          console.log(res);
-          taskFns.get();
-        });
-    }
-  }
 
   return (
     <div>
-      <p />
-      <div className="row">
-        <Header className="header" as="h2">
-          TO DO LIST
-          </Header>
-      </div>
       <div className="row">
         <Form onSubmit={onSubmit}>
           <Input

@@ -1,18 +1,22 @@
 import React from "react";
 import { Container, Grid, Header, Icon, Menu, Sidebar, Modal, Button, Checkbox, Form } from "semantic-ui-react";// import the ToDoList component
-import ToDoList from "./ToDoList"; import 'semantic-ui-css/semantic.min.css'
+import ToDoList from "./Components/ToDoList"; import 'semantic-ui-css/semantic.min.css'
 
 const SignUpForm = () => {
 
   return (
     <Form>
       <Form.Field>
-        <label>First Name</label>
-        <input placeholder='First Name' />
+        <label>Email</label>
+        <input />
       </Form.Field>
       <Form.Field>
-        <label>Last Name</label>
-        <input placeholder='Last Name' />
+        <label>Password</label>
+        <input />
+      </Form.Field>
+      <Form.Field>
+        <label>Re-Type Password</label>
+        <input />
       </Form.Field>
       <Form.Field>
         <Checkbox label='I agree to the Terms and Conditions' />
@@ -22,25 +26,29 @@ const SignUpForm = () => {
   );
 };
 
-const ModalComponent = () => {
+const SignInModal = () => {
   const [open, setOpen] = React.useState(false)
   return (
     <Modal
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Icon name="sign-in" size="small" />}
+      trigger={
+        <Menu.Item as="a">
+          <Icon name="sign-in" size="small" />
+      Sign In
+      </Menu.Item>}
     >
       <Modal.Header>Log in to GoToDo</Modal.Header>
       <Modal.Content>
         <Modal.Description>
-          <Header>Sign up for GoToDo</Header>
+          <Header>Create an Account</Header>
           <SignUpForm />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
         <Button color='black' onClick={() => setOpen(false)}>
-          Nope
+          Go Back
         </Button>
         <Button
           content="Create Account"
@@ -73,9 +81,7 @@ const App = () => {
                 as="a">
                 <Header as="h3" inverted>GoToDo</Header>
               </Menu.Item>
-              <Menu.Item as="a">
-                <ModalComponent /> Sign In
-              </Menu.Item>
+              <SignInModal />
             </Sidebar>
           </Grid.Column>
           <Grid.Column>
